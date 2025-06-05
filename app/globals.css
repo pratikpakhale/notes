@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: white;
+  color: black;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+  text-transform: lowercase;
+}
+
+/* Remove all button styling */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+/* Minimal input styling */
+input,
+textarea {
+  background: transparent;
+  font-family: inherit;
+  text-transform: lowercase;
+}
+
+/* Remove focus rings and add subtle underline focus */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #666;
+}
+
+/* Ensure markdown content stays minimal and lowercase */
+.prose {
+  color: black;
+  text-transform: lowercase;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: black;
+  font-weight: normal;
+  text-transform: lowercase;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+.prose strong {
+  color: black;
+  font-weight: 600;
+}
+
+.prose code {
+  background-color: #f5f5f5;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0;
+  font-size: 0.875em;
+  text-transform: none; /* Keep code as-is */
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.prose pre {
+  background-color: #f5f5f5;
+  border-radius: 0;
+  text-transform: none; /* Keep code as-is */
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.prose blockquote {
+  border-left: 2px solid #e5e5e5;
+  color: #666;
+}
+
+/* Force lowercase for UI elements only, not content */
+.ui-text {
+  text-transform: lowercase;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+/* Apply lowercase to specific UI elements instead of globally */
+button,
+.nav-text,
+.ui-label,
+.auth-form,
+.header-text {
+  text-transform: lowercase;
+}
+
+/* Keep note content as-is */
+.note-content,
+.note-title-input,
+.note-content-textarea {
+  text-transform: none !important;
+}
+
+/* Exception for code blocks */
+code,
+pre {
+  text-transform: none !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+/* Modern editor specific styles */
+.modern-editor textarea {
+  text-transform: none !important;
+}
+
+.modern-editor textarea::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
