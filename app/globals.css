@@ -6,7 +6,6 @@ body {
   background-color: white;
   color: black;
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
-  text-transform: lowercase;
 }
 
 /* Remove all button styling */
@@ -24,7 +23,6 @@ input,
 textarea {
   background: transparent;
   font-family: inherit;
-  text-transform: lowercase;
 }
 
 /* Remove focus rings and add subtle underline focus */
@@ -34,11 +32,12 @@ textarea:focus {
   border-color: #666;
 }
 
-/* Ensure markdown content stays minimal and lowercase */
+/* Clean prose styles */
 .prose {
   color: black;
-  text-transform: lowercase;
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  max-width: none;
 }
 
 .prose h1,
@@ -48,9 +47,28 @@ textarea:focus {
 .prose h5,
 .prose h6 {
   color: black;
-  font-weight: normal;
-  text-transform: lowercase;
+  font-weight: 500;
+  margin: 1.5em 0 0.5em 0;
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+.prose h1 {
+  font-size: 1.5em;
+}
+.prose h2 {
+  font-size: 1.3em;
+}
+.prose h3 {
+  font-size: 1.1em;
+}
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 1em;
+}
+
+.prose p {
+  margin: 0.75em 0;
 }
 
 .prose strong {
@@ -58,35 +76,70 @@ textarea:focus {
   font-weight: 600;
 }
 
+.prose em {
+  font-style: italic;
+}
+
 .prose code {
   background-color: #f5f5f5;
   padding: 0.125rem 0.25rem;
-  border-radius: 0;
-  font-size: 0.875em;
-  text-transform: none; /* Keep code as-is */
+  border-radius: 2px;
+  font-size: 0.9em;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .prose pre {
   background-color: #f5f5f5;
-  border-radius: 0;
-  text-transform: none; /* Keep code as-is */
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1em 0;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.875em;
+}
+
 .prose blockquote {
-  border-left: 2px solid #e5e5e5;
+  border-left: 3px solid #e0e0e0;
+  padding-left: 1rem;
+  margin: 1em 0;
   color: #666;
+  font-style: italic;
 }
 
-/* Force lowercase for UI elements only, not content */
-.ui-text {
-  text-transform: lowercase;
-  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+.prose ul,
+.prose ol {
+  margin: 0.75em 0;
+  padding-left: 1.5rem;
 }
 
-/* Apply lowercase to specific UI elements instead of globally */
-button,
+.prose li {
+  margin: 0.25em 0;
+}
+
+.prose a {
+  color: black;
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+  transition: text-decoration-color 0.2s;
+}
+
+.prose a:hover {
+  text-decoration-color: black;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 2em 0;
+}
+
+/* Force lowercase only for UI elements */
+.ui-text,
 .nav-text,
 .ui-label,
 .auth-form,
@@ -94,26 +147,46 @@ button,
   text-transform: lowercase;
 }
 
-/* Keep note content as-is */
-.note-content,
-.note-title-input,
-.note-content-textarea {
-  text-transform: none !important;
-}
-
-/* Exception for code blocks */
-code,
-pre {
-  text-transform: none !important;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
-}
-
 /* Modern editor specific styles */
+.modern-editor {
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
 .modern-editor textarea {
-  text-transform: none !important;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
 }
 
 .modern-editor textarea::placeholder {
   color: #9ca3af;
   font-style: italic;
+}
+
+/* Editor toolbar */
+.editor-toolbar {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+}
+
+.editor-toolbar button {
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  color: #666;
+  background: white;
+  transition: all 0.2s;
+}
+
+.editor-toolbar button:hover {
+  background: #f8f8f8;
+  color: black;
+}
+
+.editor-toolbar button.active {
+  background: black;
+  color: white;
+  border-color: black;
 }

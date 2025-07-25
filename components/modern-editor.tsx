@@ -3,6 +3,10 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
+import rehypeHighlight from "rehype-highlight"
+import rehypeRaw from "rehype-raw"
 
 interface ModernEditorProps {
   value: string
@@ -50,8 +54,8 @@ export function ModernEditor({ value, onChange, placeholder, className, onPaste 
         textarea.selectionStart = start + before.length
         textarea.selectionEnd = start + before.length + placeholder.length
       } else {
-        textarea.selectionStart = start + before.length
-        textarea.selectionEnd = start + before.length + textToInsert.length
+        textarea.selectionStart = start + before.length + textToInsert.length + after.length
+        textarea.selectionEnd = start + before.length + textToInsert.length + after.length
       }
     }, 0)
   }
@@ -75,7 +79,7 @@ export function ModernEditor({ value, onChange, placeholder, className, onPaste 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const textarea = e.target as HTMLTextAreaElement
-    const { selectionStart, selectionEnd } = textarea
+    const { selectionStart } = textarea
 
     // Tab for indentation
     if (e.key === "Tab") {
@@ -120,7 +124,11 @@ export function ModernEditor({ value, onChange, placeholder, className, onPaste 
           break
         case "`":
           e.preventDefault()
-          insertText("`", "`", "code")
+          if (e.shiftKey) {
+            insertText("```\n", "\n```", "code block")
+          } else {
+            insertText("`", "`", "code")
+          }
           break
         case "Enter":
           e.preventDefault()
@@ -141,8 +149,8 @@ export function ModernEditor({ value, onChange, placeholder, className, onPaste 
   }
 
   return (
-    <div>
-      {/* Minimal controls - only show on hover or focus */}
+    <div className="modern-editor">
+      {/* Simple controls */}
       <div className="group">
         <div className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 mb-4">
           <div className="flex items-center justify-between text-xs text-gray-400">
@@ -159,7 +167,13 @@ export function ModernEditor({ value, onChange, placeholder, className, onPaste 
 
         {showPreview ? (
           <div className="prose prose-sm max-w-none">
-            <ReactMarkdown>{value || "*Preview will appear here...*"}</ReactMarkdown>
+            {value.trim() ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>
+                {value}
+              </ReactMarkdown>
+            ) : (
+              <div className="text-gray-400 italic">Preview will appear here...</div>
+            )}
           </div>
         ) : (
           <textarea

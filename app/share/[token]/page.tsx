@@ -9,6 +9,11 @@ import { Input } from "@/components/ui/input"
 import { supabase } from "@/lib/supabase"
 import { ModernEditor } from "@/components/modern-editor"
 
+import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
+import rehypeHighlight from "rehype-highlight"
+import rehypeRaw from "rehype-raw"
+
 interface Note {
   id: string
   title: string
@@ -215,11 +220,49 @@ export default function SharedNotePage({ params }: { params: { token: string } }
             />
           </div>
         ) : (
-          <div className="prose prose-sm max-w-none">
+          <div className="max-w-none">
             <h2 className="text-xl font-normal mb-2">{note.title}</h2>
-            <p className="text-xs text-gray-500 mb-8">updated {note.updated_at}</p>
-            <div className="note-content text-sm leading-relaxed">
-              <ReactMarkdown>{note.content}</ReactMarkdown>
+            <p className="text-xs text-gray-500 mb-8 ui-text">updated {note.updated_at}</p>
+            <div className="minimal-prose">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeHighlight, rehypeRaw]}
+                components={{
+                  h1: ({ children }) => <h1 className="text-xl font-medium mt-6 mb-3 first:mt-0">{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-lg font-medium mt-5 mb-2">{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-base font-medium mt-4 mb-2">{children}</h3>,
+                  p: ({ children }) => <p className="mb-3 leading-relaxed">{children}</p>,
+                  code: ({ inline, children }) => {
+                    if (inline) {
+                      return (
+                        <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono border">{children}</code>
+                      )
+                    }
+                    return (
+                      <code className="block bg-gray-100 p-3 rounded border font-mono text-sm overflow-x-auto">
+                        {children}
+                      </code>
+                    )
+                  },
+                  pre: ({ children }) => (
+                    <pre className="bg-gray-100 p-3 rounded border font-mono text-sm overflow-x-auto my-4">
+                      {children}
+                    </pre>
+                  ),
+                  a: ({ href, children }) => (
+                    <a
+                      href={href}
+                      className="text-black underline decoration-gray-400 hover:decoration-black transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {children}
+                    </a>
+                  ),
+                }}
+              >
+                {note.content}
+              </ReactMarkdown>
             </div>
           </div>
         )}
